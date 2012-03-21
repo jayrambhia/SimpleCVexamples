@@ -1,5 +1,10 @@
 from SimpleCV import *
-
+"""
+Applying Gaussian filter for DFT
+Instead of iterating over whole big(512x512) image, and making a gaussian
+filter, here we are making a gaussian filter of 64x64 and resizing it to fit 
+the image to increase speed during run time. And then applying DFT on image.
+"""
 def applyGaussianfilter(im, dia=400, highpass=False, grayscale=True):
     """
         PARAMETERS:
@@ -30,18 +35,19 @@ def applyGaussianfilter(im, dia=400, highpass=False, grayscale=True):
     img = applyGaussianfilter(im, dia=400,highpass=False,grayscale=True)
     Output img: http://i.imgur.com/MXI5T.png
     """
-    r,c = im.size()
-    flt = cv.CreateImage((r,c),cv.IPL_DEPTH_8U,1)
+    w,h = im.size()
+    flt = cv.CreateImage((64,64),cv.IPL_DEPTH_8U,1)
+    dia = int(dia/((w/64.0+h/64.0)/2.0))
     if highpass:
-        for i in range(c):
-            for j in range(r):
-                d = sqrt((j-int(r/2))**2+(i-int(c/2))**2)
+        for i in range(64):
+            for j in range(64):
+                d = sqrt((j-32)**2+(i-32)**2)
                 val = 255-(255.0*math.exp(-(d**2)/((dia**2)*2)))
                 flt[i,j]=val
     else:
-        for i in range(c):
-            for j in range(r):
-                d = sqrt((j-int(r/2))**2+(i-int(c/2))**2)
+        for i in range(64):
+            for j in range(64):
+                d = sqrt((j-32)**2+(i-32)**2)
                 val = 255.0*math.exp(-(d**2)/((dia**2)*2))
                 flt[i,j]=val        
                 
@@ -51,5 +57,5 @@ def applyGaussianfilter(im, dia=400, highpass=False, grayscale=True):
     
 if __name__ == "__main__":
     im = Image("lenna")
-    img = applyGaussianfilter(im,highpass=False,grayscale=False)
+    img = applyGaussianfilter(im,dia=10,highpass=False,grayscale=False)
     img.show()
