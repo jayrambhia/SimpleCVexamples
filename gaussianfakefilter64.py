@@ -23,17 +23,13 @@ def applyGaussianfilter(im, dia=400, highpass=False, grayscale=True):
     
     im = Image("lenna")
     img = applyGaussianfilter(im, dia=400,highpass=True,grayscale=False)
-    Output image: http://i.imgur.com/DttJv.png
     
     img = applyGaussianfilter(im, dia=400,highpass=False,grayscale=False)
-    Output img: http://i.imgur.com/PWn4o.png
     
     im = Image("grayscale_lenn.png") #take image from here: http://i.imgur.com/O0gZn.png
     img = applyGaussianfilter(im, dia=400,highpass=True,grayscale=True)
-    Output img: http://i.imgur.com/9hX5J.png
     
     img = applyGaussianfilter(im, dia=400,highpass=False,grayscale=True)
-    Output img: http://i.imgur.com/MXI5T.png
     """
     w,h = im.size()
     flt = cv.CreateImage((64,64),cv.IPL_DEPTH_8U,1)

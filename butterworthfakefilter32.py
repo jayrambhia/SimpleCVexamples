@@ -26,18 +26,12 @@ def applyButterworth(im,dia=400,order=2,highpass=False,grayscale=True):
     Examples:
     
     im = Image("lenna")
-    img = applyButterworth(im, dia=400,order=2,highpass=True,grayscale=False)
-    Output image: http://i.imgur.com/5LS3e.png
+    img = applyButterworth(im, dia=240,order=2,highpass=True,grayscale=False)
+    Output image: http://i.imgur.com/PlIsw.png
     
-    img = applyButterworth(im, dia=400,order=2,highpass=False,grayscale=False)
-    Output img: http://i.imgur.com/QlCAY.png
+    img = applyButterworth(im, dia=240,order=2,highpass=False,grayscale=False)
+    Output img: http://i.imgur.com/6RIq9.png
     
-    im = Image("grayscale_lenn.png") #take image from here: http://i.imgur.com/O0gZn.png
-    img = applyButterworth(im, dia=400,order=2,highpass=True,grayscale=True)
-    Output img: http://i.imgur.com/BYYnp.png
-    
-    img = applyButterworth(im, dia=400,order=2,highpass=False,grayscale=True)
-    Output img: http://i.imgur.com/BYYnp.png
     """
     w,h = im.size()
     flt = cv.CreateImage((32,32),cv.IPL_DEPTH_8U,1)
