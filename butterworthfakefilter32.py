@@ -3,7 +3,7 @@ Author: Jay Rambhia
 Credits: SimpleCV library
 '''
 """
-Apply of butterworth highpass/lowpass filter.
+Apply butterworth highpass/lowpass filter.
 Instead of iterating over whole big(512x512) image, and making a butterworth
 filter, here we are making a butterworthfilter of 64x64 and resizing it to fit 
 the image to increase speed during run time. And then applying DFT on image.
