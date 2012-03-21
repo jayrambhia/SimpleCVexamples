@@ -13,7 +13,7 @@ from SimpleCV import *
 def applyButterworth(im,dia=400,order=2,highpass=False,grayscale=True):
     """
         PARAMETERS:
-    im: Image on which unsharp masking/highboost filtering has to be done
+    im: Image on which butterworth filter has to be applied
     dia: int
         Diameter of Butterworth low pass filter
     order: int 
