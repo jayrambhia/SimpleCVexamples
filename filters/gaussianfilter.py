@@ -3,7 +3,7 @@ from SimpleCV import *
 def applyGaussianfilter(im, dia=400, highpass=False, grayscale=True):
     """
         PARAMETERS:
-    im: Image on which unsharp masking/highboost filtering has to be done
+    im: Image on which gaussian filter has to be applied
     boost: int  
             boost = 1 => unsharp masking
             boost > 1 => highboost filtering
