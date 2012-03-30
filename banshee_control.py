@@ -30,6 +30,7 @@ def banshee():
     time.sleep(5)
     return
     
+    
 class do(threading.Thread):
     def __init__(self):
         """
@@ -44,7 +45,6 @@ class do(threading.Thread):
         cam = Camera()
         prev = cam.getImage().scale(scale_amount[0],scale_amount[1])
         time.sleep(0.5)
-        t = 0.5
         buffer = 20
         count = 0
         prev_t = time.time()    # Note initial time
@@ -56,14 +56,14 @@ class do(threading.Thread):
             else:
                 fs = current.findMotion(prev, method="LK")   # find motion
                 # Tried BM, and LK, LK is better. need to learn more about LK
-                if fs:
+                if fs:      # if featureset found
                     dx = 0
                     dy = 0
                     for f in fs:
                         dx = dx + f.dx      # add all the optical flow detected
                         dy = dy + f.dy
                 
-                    dx = (dx / len(fs))
+                    dx = (dx / len(fs))     # Taking average
                     dy = (dy / len(fs))
 
                     prev = current
@@ -71,7 +71,7 @@ class do(threading.Thread):
                     current.save(d)
                     
                     if dy > 2 or dy < -2:
-                        vol = int(m.getvolume()[0])
+                        vol = int(m.getvolume()[0]) # getting master volume
                         if dy < 0:
                             vol = vol + (-dy*3)
                         else:
@@ -81,33 +81,33 @@ class do(threading.Thread):
                         elif vol < 0:
                             vol = 0
                         print vol
-                        m.setvolume(int(vol))
+                        m.setvolume(int(vol))   # setting master volume
                         
                     if dx > 3:
                         cur_t = time.time()
-                        if cur_t > 5 + prev_t:
-                            self.play("next")
+                        if cur_t > 5 + prev_t:  # adding some time delay
+                            self.play("next")   # changing next
                             prev_t = cur_t
                         
                     if dx < -3:
                         cur_t = time.time()
                         if cur_t > 5 + prev_t:
                             prev_t = cur_t
-                        self.play("previous")
+                        self.play("previous")   # changing previous
                         
     def play(self,command):
         """
         change, next or prev
         """
-        os.system('banshee --'+command)
+        os.system('banshee --'+command)     # giving command to change
+        
         
 def main():
-
-    #Create a process which will initiate banshee window
-    p = Process(target = banshee)
-    p.start()
+ 
+    p = Process(target = banshee)   #Create a process which will initiate banshee window
+    p.start()   # starting the process
     
-    command = do()  #Create a thread
+    command = do()  # Create a thread
     command.start() # start the thread
     command.join()  # wait for the thread to complete
     p.terminate()   # After thread ends, terminate the main process
