@@ -14,11 +14,10 @@ Banshee Media Player
 
 Tested on Ubuntu 11.10
 """
-from SimpleCV import *
-import os
-import time
+from SimpleCV import Camera, Display
+from os import system
+from time import sleep,time
 import threading
-import sys
 from multiprocessing import Process
 import alsaaudio
 
@@ -26,8 +25,8 @@ def banshee():
     """
     Start a banshee window if it is not opened
     """
-    os.system('banshee --play')
-    time.sleep(5)
+    system('banshee --play')
+    sleep(5)
     return
     
     
@@ -40,17 +39,17 @@ class do(threading.Thread):
         
     def run(self):
         m = alsaaudio.Mixer()   # defined alsaaudio.Mixer to change volume
-        scale_amount = (300,250)    # increased from (200,150). works well
-        d = Display(scale_amount)
+        scale = (300,250)    # increased from (200,150). works well
+        d = Display(scale)
         cam = Camera()
-        prev = cam.getImage().scale(scale_amount[0],scale_amount[1])
-        time.sleep(0.5)
+        prev = cam.getImage().scale(scale[0],scale[1])
+        sleep(0.5)
         buffer = 20
         count = 0
-        prev_t = time.time()    # Note initial time
+        prev_t = time()    # Note initial time
         while d.isNotDone():
             current = cam.getImage()
-            current = current.scale(scale_amount[0],scale_amount[1])
+            current = current.scale(scale[0],scale[1])
             if( count < buffer ):
                 count = count + 1
             else:
@@ -67,7 +66,7 @@ class do(threading.Thread):
                     dy = (dy / len(fs))
 
                     prev = current
-                    time.sleep(0.01)
+                    sleep(0.01)
                     current.save(d)
                     
                     if dy > 2 or dy < -2:
@@ -84,13 +83,13 @@ class do(threading.Thread):
                         m.setvolume(int(vol))   # setting master volume
                         
                     if dx > 3:
-                        cur_t = time.time()
+                        cur_t = time()
                         if cur_t > 5 + prev_t:  # adding some time delay
                             self.play("next")   # changing next
                             prev_t = cur_t
                         
                     if dx < -3:
-                        cur_t = time.time()
+                        cur_t = time()
                         if cur_t > 5 + prev_t:
                             prev_t = cur_t
                         self.play("previous")   # changing previous
@@ -99,7 +98,7 @@ class do(threading.Thread):
         """
         change, next or prev
         """
-        os.system('banshee --'+command)     # giving command to change
+        system('banshee --'+command)     # giving command to change
         
         
 def main():
