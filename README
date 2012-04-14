@@ -1,8 +1,15 @@
 SimpleCV Examples:
 
-I will be adding all the examples and stuff of image processing, computer vision, etc made using SimpleCV 
+I will be adding all the examples and stuff of image processing, 
+computer vision, etc made using SimpleCV 
 and OpenCV(python interface) here in this repository.
 
-drawlines.py - Draw lines on image. Click at two different mouse, and a line will be drawn joinig those two points.
+drawlines.py -  Draw lines on image. Click at two different mouse, and a 
+                line will be drawn joinig those two points.
+
 banshee_control.py - Control Banshee and volume using movement detection.
-pygtk1.py - Trying to use pygtk instead of pygame to show images. More functionalities will be added soon
+
+pygtk1.py - Trying to use pygtk instead of pygame to show images. 
+            More functionalities will be added soon
+            
+pygtk_video.py - Trying to use pygtk instead of pygame to show video.
