@@ -47,9 +47,6 @@ class DisplayImage():
         self.thrd = Thread(target=gtk.main, name = "GTK thread")
         self.thrd.daemon = True
         self.thrd.start()
-        
-    def start_gtk(self):
-        gtk.main()
     
     def leave_app(self,widget,data):
         self.done = True
