@@ -36,6 +36,7 @@ class DisplayImage():
         if self.img_gtk is None:
             self.img_flag=0
             self.img_gtk = gtk.Image()          # Create gtk.Image() only once (first time)
+            self.image_box.add(self.img_gtk)    # Add Image in the box, only once (first time)
         self.img_pixbuf = gtk.gdk.pixbuf_new_from_data(self.img.tostring(),
                                                         gtk.gdk.COLORSPACE_RGB,
                                                         False,
@@ -44,8 +45,6 @@ class DisplayImage():
                                                         self.img.height,
                                                         self.img.width*self.img.nChannels)
         self.img_gtk.set_from_pixbuf(self.img_pixbuf)
-        if not self.img_flag:
-            self.image_box.add(self.img_gtk)    # Add Image in the box, only once (first time)
         self.img_gtk.show()
         self.win.show_all()
         if not self.img_flag:
