@@ -14,20 +14,20 @@ class DisplayImage():
     def __init__(self,title="SimpleCV"):
         self.img = None
         self.img_gtk = None
-        self.mouseX=0
-        self.mouseY=0
+        self.mouseX = 0
+        self.mouseY = 0
+        self.mouse_rawX = 0
+        self.mouse_rawY = 0
+        self.done = False
         self.win = gtk.Window()
         self.win.set_title(title)
         self.win.connect("delete_event",self.leave_app)
         self.image_box = gtk.EventBox()
-        # Need to add more functionality here
+        self.image_box.connect("motion_notify_event",self.motion_callback)
         self.image_box.connect("button_press_event",self.press_callback)
         self.win.add(self.image_box)
         self.thread_gtk()           # thread for gtk.main() . Need to 
                                     # consider multiple images too.
-    
-    def leave_app(self,widget,event):
-        gtk.main_quit()
     
     def show_image(self,image):
         self.img = image
@@ -43,18 +43,39 @@ class DisplayImage():
         self.win.show_all()
         
     def thread_gtk(self):
-        Thread(target=self.start_gtk).start()
+        # changed this function. Improved threading.
+        self.thrd = Thread(target=gtk.main, name = "GTK thread")
+        self.thrd.daemon = True
+        self.thrd.start()
         
     def start_gtk(self):
         gtk.main()
     
     def leave_app(self,widget,data):
+        self.done = True
         self.win.destroy()
         gtk.main_quit()
         
     def press_callback(self,widget,event):
-        # I'll add more functionality here
         self.mouseX = int(event.x)
         self.mouseY = int(event.y)
-        print self.mouseX, self.mouseY
+        self.mouse_rawX = int(event.x_root)
+        self.mouse_rawY = int(event.y_root)
+        print self.mouseX, self.mouseY, self.mouse_rawX, self.mouse_rawY,"press"
+        
+    def motion_callback(self,widget,event):
+        self.mouseX = int(event.x)
+        self.mouseY = int(event.y)
+        self.mouse_rawX = int(event.x_root)
+        self.mouse_rawY = int(event.y_root)
+        print self.mouseX, self.mouseY, self.mouse_rawX, self.mouse_rawY,"motion"
+    
+    def isDone(self):
+        return self.done
+    
+    def quit(self):
+        self.done = True
+        self.win.destroy()
+        gtk.main_quit()
+    
         
