@@ -12,6 +12,7 @@ gtk.gdk.threads_init()
 
 class DisplayImage():
     def __init__(self,title="SimpleCV"):
+        #print "Initialize"
         self.img = None
         self.img_gtk = None
         self.mouseX = 0
@@ -19,6 +20,7 @@ class DisplayImage():
         self.mouse_rawX = 0
         self.mouse_rawY = 0
         self.done = False
+        self.thrd = None
         self.win = gtk.Window()
         self.win.set_title(title)
         self.win.connect("delete_event",self.leave_app)
@@ -26,30 +28,39 @@ class DisplayImage():
         self.image_box.connect("motion_notify_event",self.motion_callback)
         self.image_box.connect("button_press_event",self.press_callback)
         self.win.add(self.image_box)
-        self.thread_gtk()           # thread for gtk.main() . Need to 
+        #self.thread_gtk()           # thread for gtk.main() . Need to 
                                     # consider multiple images too.
     
     def show_image(self,image):
         self.img = image
         if self.img_gtk is None:
             self.img_flag=0
-            self.img_gtk = gtk.Image()
-        self.img_pixbuf = gtk.gdk.pixbuf_new_from_data(self.img.tostring(),gtk.gdk.COLORSPACE_RGB,False,self.img.depth,self.img.width,self.img.height,self.img.width*self.img.nChannels)
+            self.img_gtk = gtk.Image()          # Create gtk.Image() only once (first time)
+        self.img_pixbuf = gtk.gdk.pixbuf_new_from_data(self.img.tostring(),
+                                                        gtk.gdk.COLORSPACE_RGB,
+                                                        False,
+                                                        self.img.depth,
+                                                        self.img.width,
+                                                        self.img.height,
+                                                        self.img.width*self.img.nChannels)
         self.img_gtk.set_from_pixbuf(self.img_pixbuf)
         if not self.img_flag:
-            self.image_box.add(self.img_gtk)
-            self.img_flag=1
+            self.image_box.add(self.img_gtk)    # Add Image in the box, only once (first time)
         self.img_gtk.show()
         self.win.show_all()
+        if not self.img_flag:
+            self.thread_gtk()                   # gtk.main() only once (first time)
+            #print "change flag"
+            self.img_flag=1                     # change flag
         
     def thread_gtk(self):
         # changed this function. Improved threading.
+        #print "create thread"
         self.thrd = Thread(target=gtk.main, name = "GTK thread")
         self.thrd.daemon = True
+        #print "start thread"
         self.thrd.start()
-        
-    def start_gtk(self):
-        gtk.main()
+        #print "thread_gtk end"
     
     def leave_app(self,widget,data):
         self.done = True
@@ -78,4 +89,3 @@ class DisplayImage():
         self.win.destroy()
         gtk.main_quit()
     
-        
