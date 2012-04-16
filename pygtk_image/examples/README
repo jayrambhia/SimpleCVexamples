@@ -1,0 +1,10 @@
+Examples and tests for pygtk_image.
+
+pygtk_image_test.py  -  Two images are show after one another.
+
+pygtk_image_test2.py -  Images are capture using camera. And shown after
+                        a small interval. A req square is drawn, whenever
+                        mouse is clicked.
+                        
+pygtk_mul_image_test.py - Two images are shown simultaneously.
+                        

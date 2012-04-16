@@ -1,0 +1,13 @@
+pygtk_image
+
+I am trying to use pygtk to show images of simplecv/opencv instead of pygame.
+pygtk_image contains a class DisplayImage. I am calling gtk.main() using threads.
+
+Example:
+>>> i = Image("lenna")
+>>> d = DisplayImage()
+>>> d.show(i.toRGB().getBitmap())
+>>> time.sleep(5)
+>>> d.quit()
+
+Some other examples are added.
