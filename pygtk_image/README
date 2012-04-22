@@ -1,3 +1,7 @@
+========================================================
+The whole work has been shifted to another repository.
+https://github.com/jayrambhia/image-gtk
+========================================================
 pygtk_image
 
 I am trying to use pygtk to show images of simplecv/opencv instead of pygame.
